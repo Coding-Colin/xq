@@ -26,4 +26,12 @@
     <select id="getByLoginUser" parameterType="java.lang.String" resultType="com.community.system.bean.BodyRegister">
         select * from bodyregister where loginUser=#{loginUser};
     </select>
+
+    <select id="checkToday" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(1) from bodyregister where fid=#{fid} and TO_DAYS(date) = TO_DAYS(now())
+    </select>
+
+    <select id="checkTem" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(1) from bodyregister where fid=#{fid} and temperature > 37.3
+    </select>
 </mapper>

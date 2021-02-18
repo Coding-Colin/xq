@@ -49,8 +49,19 @@ public class ClientController {
      * @return
      */
     @RequestMapping("/clientIndex.do")
-    public String index(HttpSession session){
+    public String index(HttpSession session,Model model){
         LOGINUSER = String.valueOf(session.getAttribute("loginUser"));
+        List<Family> families = familyMapper.getByLoginUser(LOGINUSER);
+        StringBuffer stringBuffer = new StringBuffer();
+        for (Family family : families){
+            if (bodyRegisterMapper.checkToday(family.id) == 0){
+                stringBuffer.append(family.name+"今日没有登记体温！");
+            }
+            if (bodyRegisterMapper.checkToday(family.id) > 0){
+                stringBuffer.append(family.name+"体温异常！");
+            }
+        }
+        model.addAttribute("info",stringBuffer.toString());
         return "client/index";
     }
 
