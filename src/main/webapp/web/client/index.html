@@ -1,0 +1,85 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>济南常春藤小区业主中心</title>
+    <link rel="stylesheet" href="resource/indexStyle/css/normalize.min.css">
+    <link rel="stylesheet" href="resource/indexStyle/css/style.css">
+</head>
+
+<body>
+<header>
+    <div class='container'>
+        <h1>济南常春藤小区业主中心</h1>
+        <p>齐心协力，共抗疫情</p>
+    </div>
+</header>
+<div class='container'>
+    <ul>
+        <li>
+            <a class='normal' th:href='@{/personal.do}'></a>
+            <div class='info'>
+                <h3>个人信息</h3>
+                <p>这里可以修改个人信息</p>
+            </div>
+        </li>
+        <li>
+            <a class='normal' th:href='@{/family.do}'></a>
+            <div class='info'>
+                <h3>家庭成员登记</h3>
+                <p>在这里您可以操作您的家庭成员</p>
+            </div>
+        </li>
+        <li>
+            <a class='normal' th:href='@{/bodyregister.do}'></a>
+            <div class='info'>
+                <h3>体温登记</h3>
+                <p>按照市防疫局的要求，市民每天要进行体温登记</p>
+            </div>
+        </li>
+        <li>
+            <a class='normal' th:href='@{/outregister.do}'></a>
+            <div class='info'>
+                <h3>外出登记</h3>
+                <p>按照市防疫局要求，您需要在这里填写外出申请</p>
+            </div>
+        </li>
+        <li>
+            <a class='normal' th:href='@{/affiche.do}'></a>
+            <div class='info'>
+                <h3>防疫公告</h3>
+                <p>认真落实政府下达的防疫措施，最新的防疫公告在这里查看</p>
+            </div>
+        </li>
+        <li>
+            <a class='normal' th:href='@{/luntan.do}'></a>
+            <div class='info'>
+                <h3>社区论坛</h3>
+                <p>在这里我们可以合法讨论一些问题</p>
+            </div>
+        </li>
+        <li>
+            <a class='normal' th:href='@{/leavemessage.do}'></a>
+            <div class='info'>
+                <h3>市民留言箱</h3>
+                <p>如果您对本社区有什么意见，这里是您提意见的入口。</p>
+            </div>
+        </li>
+        <li>
+            <a class='normal' th:href='@{/center.do}'></a>
+            <div class='info'>
+                <h3>我的汇报</h3>
+                <p>这部分包含我的意见，日常体温登记，外出登记等信息</p>
+            </div>
+        </li>
+        <li>
+            <a class='normal' th:href='@{/quit.do}'></a>
+            <div class='info'>
+                <h3>退出系统</h3>
+                <p>退出系统</p>
+            </div>
+        </li>
+    </ul>
+</div>
+<script src="resource/indexStyle/js/index.js"></script>
+</body>
+</html>

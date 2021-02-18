@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>社区论坛</title>
+<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css">
+<style>
+	.container{
+		width: 1000px;
+	}
+	.commentbox{
+		width: 900px;
+		margin: 20px auto;
+	}
+	.mytextarea {
+	    width: 100%;
+	    overflow: auto;
+	    word-break: break-all;
+	    height: 100px;
+	    color: #000;
+	    font-size: 1em;
+	    resize: none;
+	}
+	.comment-list{
+		width: 900px;
+		margin: 20px auto;
+		clear: both;
+		padding-top: 20px;
+	}
+	.comment-list .comment-info{
+		position: relative;
+		margin-bottom: 20px;
+		margin-bottom: 20px;
+		border-bottom: 1px solid #ccc;
+	}
+	.comment-list .comment-info header{
+		width: 10%;
+		position: absolute;
+	}
+	.comment-list .comment-info header img{
+		width: 100%;
+		border-radius: 50%;
+		padding: 5px;
+	}
+	.comment-list .comment-info .comment-right{
+		padding:5px 0px 5px 11%; 
+	}
+	.comment-list .comment-info .comment-right h3{
+		margin: 5px 0px;
+	}
+	.comment-list .comment-info .comment-right .comment-content-header{
+		height: 25px;
+	}
+	.comment-list .comment-info .comment-right .comment-content-header span,.comment-list .comment-info .comment-right .comment-content-footer span{
+		padding-right: 2em;
+		color: #aaa;
+	}
+	.comment-list .comment-info .comment-right .comment-content-header span,.comment-list .comment-info .comment-right .comment-content-footer span.reply-btn,.send,.reply-list-btn{
+		cursor: pointer;
+	}
+	.comment-list .comment-info .comment-right .reply-list {
+		border-left: 3px solid #ccc;
+		padding-left: 7px;
+	}
+	.comment-list .comment-info .comment-right .reply-list .reply{
+		border-bottom: 1px dashed #ccc;
+	}
+	.comment-list .comment-info .comment-right .reply-list .reply div span{
+		padding-left: 10px;
+	}
+	.comment-list .comment-info .comment-right .reply-list .reply p span{
+		padding-right: 2em;
+		color: #aaa;
+	}
+</style>
+</head>
+<body>
+
+<div class="container">
+	<div class="commentbox">
+		<textarea cols="80" rows="50" placeholder="大家按照公民言论准则发言......" class="mytextarea" id="content"></textarea>
+		<div class="btn btn-info pull-right" id="comment">发布</div>
+		&nbsp;&nbsp;
+		<div class="btn btn-info pull-right" id="back" onclick="window.history.back()">返回</div>
+	</div>
+	<div class="comment-list">
+		
+	</div>
+</div>
+<script src="resource/jquery-3.5.1/jquery-3.5.1.min.js"></script>
+<script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
+<script>
+	//初始化数据
+	window.onload = function () {
+        $.ajax({
+            type: "GET",
+            url: "/onloadluntan.do",
+            dataType: "json",
+            success: function (data) {
+                var html = show(data);
+                $(".comment-list").html(html);
+            }
+        });
+	}
+	function show(data){
+	    var el = "";
+	    for(var i=0;i<data.length;i++){
+            el += "<div class='comment-info'><header><img src='../resource/img/logo.ico'></header>" ;
+            el += "<div class='comment-right'><h3>"+data[i].luntan.replyName+"</h3>";
+            el += "<div class='comment-content-header'><span><i class='glyphicon glyphicon-time'></i>"+data[i].luntan.time+"</span>";
+            el += "<span><i class='glyphicon glyphicon-map-marker'></i>"+data[i].luntan.address+"</span>";
+            el += "</div><p class='content'>"+data[i].luntan.content+"</p><div class='comment-content-footer'><div class='row'><div class='col-md-10'>";
+            el += "<span><i class='glyphicon glyphicon-pushpin'></i> 来自:"+data[i].luntan.osname+"</span>";
+            el += "<span><i class='glyphicon glyphicon-globe'></i> "+data[i].luntan.browse+"</span>";
+            el += "</div><div class='col-md-2'><span class='reply-btn' onclick='reply("+data[i].luntan.id+")'>回复</span></div></div></div><div class='reply-list'>";
+            el +=selectReply(data[i].reply);
+            el += "</div></div></div>";
+
+		}
+        return el;
+	}
+
+	function selectReply(data){
+	    var html = '';
+	    for (var i=0;i<data.length;i++){
+            html += "<div class='reply'><div><a href='javascript:void(0)' class='replyname'>"+data[i].name+"</a>:<a href='javascript:void(0)'>@"+data[i].name+"</a><span>"+data[i].msg+"</span></div>"
+            html += "<p><span>"+data[i].date+"</span></p></div>";
+	    }
+	    return html ;
+
+	}
+
+    $("#comment").click(function(){
+        var array = [$("#content").val()];
+        $.ajax({
+            type: "POST",
+            url: "/addchat.do",
+            dataType: "json",
+            contentType : "application/json;charset=UTF-8",
+            data:JSON.stringify(array),
+            success: function (data) {
+                alert(data);
+                var obj = new Object();
+                obj.img="resource/img/logo.ico";
+                obj.replyName="匿名";
+                obj.content=$("#content").val();
+                obj.browse="深圳";
+                obj.osname="win10";
+                obj.replyBody="";
+                $(".comment-list").addCommentList({data:[],add:obj});
+                window.location.href =  window.location.href;
+            }
+        });
+
+    });
+
+
+	function reply(e) {
+		var msg = prompt("评论内容","");
+		if (msg){
+            var array = [e,msg];
+            $.ajax({
+                type: "POST",
+                url: "/addluntanreply.do",
+                dataType: "json",
+                contentType : "application/json;charset=UTF-8",
+                data:JSON.stringify(array),
+                success: function (data) {
+                    alert(data);
+                    window.location.href = window.location.href;
+                }
+            });
+
+        }
+    }
+</script>
+</body>
+</html>

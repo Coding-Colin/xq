@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.community.system.mapper.FamilyMapper">
+
+    <select id="getAll" resultType="com.community.system.bean.Family">
+        select * from family;
+    </select>
+
+    <select id="getById" parameterType="java.lang.Integer" resultType="com.community.system.bean.Family">
+        select * from family where id=#{id};
+    </select>
+
+    <insert id="add" parameterType="com.community.system.bean.Family">
+        insert into family(name,sex,idcard,age,pos,loginUser) values (#{name},#{sex},#{idcard},#{age},#{pos},#{loginUser});
+    </insert>
+
+    <update id="update" parameterType="com.community.system.bean.Family">
+        update family set name=#{name},sex=#{sex},idcard=#{idcard},age=#{age},pos=#{pos} where id=#{id};
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from family where id=#{id};
+    </delete>
+
+    <select id="getByLoginUser" parameterType="java.lang.String" resultType="com.community.system.bean.Family">
+        select * from family where loginUser=#{loginUser};
+    </select>
+
+</mapper>

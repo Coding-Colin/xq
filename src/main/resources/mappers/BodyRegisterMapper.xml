@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.community.system.mapper.BodyRegisterMapper">
+
+    <select id="getAll" resultType="com.community.system.bean.BodyRegister">
+        select * from bodyregister;
+    </select>
+
+    <select id="getById" parameterType="java.lang.Integer" resultType="com.community.system.bean.BodyRegister">
+        select * from bodyregister where id=#{id};
+    </select>
+
+    <insert id="add" parameterType="com.community.system.bean.BodyRegister">
+        insert into bodyregister(fid,temperature,date,loginUser) values (#{fid},#{temperature},now(),#{loginUser});
+    </insert>
+
+    <update id="update" parameterType="com.community.system.bean.BodyRegister">
+        update bodyregister set fid=#{fid},temperature=#{temperature},date=now() where id=#{id};
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from bodyregister where id=#{id};
+    </delete>
+
+    <select id="getByLoginUser" parameterType="java.lang.String" resultType="com.community.system.bean.BodyRegister">
+        select * from bodyregister where loginUser=#{loginUser};
+    </select>
+</mapper>

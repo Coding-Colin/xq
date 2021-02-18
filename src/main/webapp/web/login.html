@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<head>
+    <title>登陆</title>
+    <link rel="stylesheet" href="resource/commonStyle/css/bootstrap.min.css">
+    <link rel="stylesheet" href="resource/commonStyle/css/animate.css">
+    <link rel="stylesheet" href="resource/commonStyle/css/style.css">
+    <script src="resource/commonStyle/js/modernizr-2.6.2.min.js"></script>
+    <script src="resource/commonStyle/js/respond.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="fh5co-form animate-box" data-animate-effect="fadeIn">
+                <h2>登陆</h2>
+                <div class="form-group">
+                    <label for="username" class="sr-only">用户名</label>
+                    <input type="text" class="form-control" id="username" placeholder="用户名" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="password" class="sr-only">密码</label>
+                    <input type="password" class="form-control" id="password" placeholder="密码" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <input type="button" id="loginbtn" value="登陆" class="btn btn-primary">
+                    <!--<input id="regist" type="button" value="注册" class="btn btn-primary" style="display: inline"> //注册这部分先暂时挂起-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="resource/commonStyle/js/jquery.min.js"></script>
+<script src="resource/commonStyle/js/bootstrap.min.js"></script>
+<script src="resource/commonStyle/js/jquery.placeholder.min.js"></script>
+<script src="resource/commonStyle/js/jquery.waypoints.min.js"></script>
+<script src="resource/commonStyle/js/main.js"></script>
+</body>
+<script>
+    $("#regist").click(function () {
+        window.location.href = "/registHtml.do";
+    })
+
+    //登陆
+    $(document).on("click", "#loginbtn", function () {
+        var name = $("#username").val();
+        var password = $("#password").val();
+        if (name == '') {
+            alert("用户名不能为空");
+        }
+        else if (password == '') {
+            alert("密码不能为空");
+        }
+        else {
+            var array = [name, password];
+            $.ajax({
+                type: "POST",
+                url: "/login.do",
+                dataType: "json",
+                contentType: "application/json;charset=UTF-8",
+                data: JSON.stringify(array),
+                success: function (data) {
+                    alert(data);
+                    if (data == '欢迎管理员登陆') {
+                        window.location.href = 'userHtml.do';
+                    }
+                    else if (data == '欢迎用户登陆') {
+                        window.location.href = 'clientIndex.do';
+                    }
+                }
+            });
+        }
+    });
+</script>
+</html>
+

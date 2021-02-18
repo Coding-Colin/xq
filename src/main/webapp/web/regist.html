@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+	<head>
+	<title>注册</title>
+	<link rel="stylesheet" href="resource/commonStyle/css/bootstrap.min.css">
+	<link rel="stylesheet" href="resource/commonStyle/css/animate.css">
+	<link rel="stylesheet" href="resource/commonStyle/css/style.css">
+	<script src="resource/commonStyle/js/modernizr-2.6.2.min.js"></script>
+	<script src="resource/commonStyle/js/respond.min.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4 col-md-offset-4">
+					<div  class="fh5co-form animate-box" data-animate-effect="fadeIn">
+						<h2>注册</h2>
+						<div class="form-group">
+							<label for="name" class="sr-only">用户名</label>
+							<input type="text" class="form-control" id="name" placeholder="用户名" autocomplete="off">
+						</div>
+						<div class="form-group">
+							<label for="email" class="sr-only">邮箱</label>
+							<input type="email" class="form-control" id="email" placeholder="邮箱">
+						</div>
+						<div class="form-group">
+							<label for="password" class="sr-only">密码</label>
+							<input type="password" class="form-control" id="password" placeholder="密码" autocomplete="off">
+						</div>
+						<div class="form-group">
+							<label for="password" class="sr-only">确认密码</label>
+							<input type="password" class="form-control" id="Apassword" placeholder="确认密码" autocomplete="off">
+						</div>
+						<div class="form-group">
+							<input type="button" value="确定" id="registbtn" class="btn btn-primary">
+							<input type="button" value="返回" class="btn btn-primary" style="display: inline" id="back">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<script src="resource/commonStyle/js/jquery.min.js"></script>
+	<script src="resource/commonStyle/js/bootstrap.min.js"></script>
+	<script src="resource/commonStyle/js/jquery.placeholder.min.js"></script>
+	<script src="resource/commonStyle/js/jquery.waypoints.min.js"></script>
+	<script src="resource/commonStyle/js/main.js"></script>
+	</body>
+<script>
+	$("#back").click(function () {
+		window.history.back();
+    });
+
+    //注册
+    $(document).on("click","#registbtn",function () {
+        var name = $("#name").val();
+        var email = $("#email").val();
+        var password = $("#password").val();
+        var Apassword = $("#Apassword").val();
+        var regex = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+        //判断
+        if(!regex.test(email)){
+            confirm("邮箱格式不正确");
+            return false;
+        }
+		if(name==''){
+            alert("用户名不能为空");
+        }
+        else if(email==''){
+            alert("邮箱不能为空");
+        }
+        else if(password==''){
+            alert("密码不能为空");
+        }
+        else if(Apassword==''){
+            alert("确认密码不能为空");
+        }
+        else if(Apassword!=password){
+            alert("两次密码不一致");
+        }
+        else {
+            if (confirm("是否确定注册？")) {
+                var array = [name,email,password,0];
+                $.ajax({
+                    type: "POST",
+                    url: "/regist.do",
+                    dataType: "json",
+                    contentType : "application/json;charset=UTF-8",
+                    data:JSON.stringify(array),
+                    success: function (data) {
+                        alert(data);
+                        if (data=='注册成功') {
+                            window.location.href="login.html";
+                        }
+                    }
+                });
+            }
+        }
+    });
+
+</script>
+</html>
+

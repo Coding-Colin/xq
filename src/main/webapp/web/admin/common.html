@@ -1,0 +1,60 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>common</title>
+</head>
+<body>
+
+<div class="layui-header" th:fragment="topbar">
+    <div class="layui-logo">管理后台</div>
+    <!--右侧-->
+    <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item">
+            <a href="javascript:;">
+                <img src="resource/img/logo.ico" class="layui-nav-img">
+                [[${session.loginUser}]]
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="layui-side layui-bg-black" th:fragment="sidebar">
+    <div class="layui-side-scroll">
+        <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+            <li class="layui-nav-item layui-nav-itemed">
+                <a class="" href="javascript:;">用户管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a th:href="@{userHtml.do}">用户管理</a></dd>
+                    <dd><a th:href="@{familyHtml.do}">成员管理</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item layui-nav-itemed">
+                <a class="" href="javascript:;">每日汇报</a>
+                <dl class="layui-nav-child">
+                    <dd><a th:href="@{bodyregisterHtml.do}">体温汇报</a></dd>
+                    <dd><a th:href="@{outregisterHtml.do}">外出汇报</a></dd>
+                    <dd><a th:href="@{traceHtml.do}">溯源</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item layui-nav-itemed">
+                <a class="" href="javascript:;">社区管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a th:href="@{afficheHtml.do}">防疫公告</a></dd>
+                    <dd><a th:href="@{infoHtml.do}">意见收集</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item layui-nav-itemed">
+                <a class="" href="javascript:;">其他</a>
+                <dl class="layui-nav-child">
+                    <dd><a th:href="@{quit.do}">退出</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="layui-footer" align="center" th:fragment="bottombar">
+    © 2021 - 小区防疫管理系统管理端
+</div>
+</body>
+</html>

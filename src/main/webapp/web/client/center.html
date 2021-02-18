@@ -1,0 +1,95 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="resource/layui/css/layui.css">
+    <title>我的汇报</title>
+    <style>
+        .layui-table{
+            width: 80%;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-body layui-col-lg-offset1">
+    <h2 class="layui-col-lg-offset4">家庭成员</h2>
+    <table class="layui-table"  id="table1">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>姓名</th>
+            <th>性别</th>
+            <th>身份证</th>
+            <th>年龄</th>
+        </tr>
+        </thead>
+        <tbody >
+        <tr th:each="log:${logs1}">
+            <th width="5%">[[${log.id}]]</th>
+            <th width="10%">[[${log.name}]]</th>
+            <th width="10%">[[${log.sex}]]</th>
+            <th width="20%">[[${log.idcard}]]</th>
+            <th width="15%">[[${log.age}]]</th>
+        </tr>
+        </tbody>
+    </table>
+    <h2 class="layui-col-lg-offset4">体温登记</h2>
+    <table class="layui-table" id="table2">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>测量人</th>
+            <th>性别</th>
+            <th>体温</th>
+            <th>测量日期</th>
+        </tr>
+        </thead>
+        <tbody >
+        <tr th:each="log:${logs2}">
+            <th width="5%">[[${log.bodyregister.id}]]</th>
+            <th width="15%">[[${log.family.name}]]</th>
+            <th width="15%">[[${log.family.sex}]]</th>
+            <th width="20%">[[${log.bodyregister.temperature}]]</th>
+            <th width="15%"  th:text="${#dates.format(log.bodyregister.date,'yyyy-MM-dd')}"></th>
+        </tr>
+        </tbody>
+    </table>
+    <h2 class="layui-col-lg-offset4">外出登记</h2>
+    <table class="layui-table" id="table3">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>测量人</th>
+            <th>性别</th>
+            <th>外出事由</th>
+            <th>申请人</th>
+        </tr>
+        </thead>
+        <tbody >
+        <tr th:each="log:${logs3}">
+            <th width="5%">[[${log.outregister.id}]]</th>
+            <th width="15%">[[${log.family.name}]]</th>
+            <th width="15%">[[${log.family.sex}]]</th>
+            <th width="20%">[[${log.outregister.context}]]</th>
+            <th width="15%" th:text="${#dates.format(log.outregister.date,'yyyy-MM-dd')}"></th>
+        </tr>
+        </tbody>
+    </table>
+    <button class="layui-btn layui-btn-radius layui-col-lg-offset4" style="width: 200px;height: 40px" onclick="window.history.back()">返回</button>
+</div>
+
+
+</body>
+<script src="resource/jquery-3.5.1/jquery-3.5.1.min.js"></script>
+<script src="resource/layui/layui.js"></script>
+
+<script>
+
+    $("#back").click(function(){
+        window.location.href = 'clientIndex.do';
+    });
+    window.onload = function () {
+        $("#table1").show()
+        $("#table2").show()
+        $("#table3").show()
+    }
+</script>
+</html>

@@ -1,0 +1,75 @@
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>防疫公告</title>
+    <link rel="stylesheet" href="resource/layui/css/layui.css">
+    <link rel="stylesheet" href="https://www.jq22.com/jquery/bootstrap-3.3.4.css">
+    <link rel="stylesheet" href="https://www.jq22.com/jquery/font-awesome.4.7.0.css">
+    <link rel="stylesheet" href="resource/style/css/affiche.css">
+    <link rel="stylesheet" href="resource/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="resource/assets/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="resource/assets/css/form-elements.css">
+    <link rel="stylesheet" href="resource/assets/css/style.css">
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <link rel="shortcut icon" href="resource/assets/ico/favicon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="resource/assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="resource/assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="resource/assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="resource/assets/ico/apple-touch-icon-57-precomposed.png">
+</head>
+<body>
+<div class="top-content">
+    <div class="inner-bg">
+        <div class="container">
+            <div class="demo">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-offset-3 col-md-6">
+                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<center >
+    <button class="layui-btn layui-btn-radius" onclick="window.history.back()" style="width: 20%;height: 60px"> 返回</button>
+</center>
+<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script src="https://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
+</body>
+<script>
+    window.onload = function () {
+        $.ajax({
+            type: "GET",
+            url: "/selectAffs.do",
+            dataType: "json",
+            success: function (data) {
+                var html = '';
+                for (var i=0;i<data.length;i++){
+                    html += '<div class="panel panel-default">';
+                    html += '<div class="panel-heading" role="tab" id="heading'+data[i].id+'">';
+                    html += '<h4 class="panel-title">';
+                    html += '<a role="button" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse'+data[i].id+'" aria-expanded="false" aria-controls="collapse'+data[i].id+'">';
+                    html += data[i].title;
+                    html += '</a>';
+                    html += '</h4>';
+                    html += '</div>';
+                    html += '<div id="collapse'+data[i].id+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+data[i].id+'">';
+                    html += '<div class="panel-body">';
+                    html += '<p>';
+                    html += data[i].content;
+                    html += '</p>';
+                    html += '</div>';
+                    html += '</div>';
+                    html += '</div>';
+                }
+                $("#accordion").html(html);
+            }
+        });
+    }
+</script>
+</html>

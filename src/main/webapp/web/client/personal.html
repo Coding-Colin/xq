@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>个人信息</title>
+    <link rel="stylesheet" href="resource/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="resource/assets/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="resource/assets/css/form-elements.css">
+    <link rel="stylesheet" href="resource/assets/css/style.css">
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <link rel="shortcut icon" href="resource/assets/ico/favicon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="resource/assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="resource/assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="resource/assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="resource/assets/ico/apple-touch-icon-57-precomposed.png">
+</head>
+<body>
+<div class="top-content">
+    <div class="inner-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3 form-box">
+                    <div class="form-top">
+                        <div class="form-top-left">
+                            <h3>我的账号信息</h3>
+                            <p>这里是我的账号信息...</p>
+                        </div>
+                    </div>
+                    <div class="form-bottom contact-form">
+                        <div role="form"  method="post">
+                            <div class="form-group">
+                                <label class="sr-only" for="name">用户名</label>
+                                <input type="text" name="name" class="contact-subject form-control" id="name" th:placeholder="${user.name}" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="tel">联系方式</label>
+                                <input type="text" name="tel"  class="contact-subject form-control" id="tel" th:placeholder="${user.tel}">
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="nativeplace">小区住址</label>
+                                <input type="text" name="nativeplace"  class="contact-subject form-control" id="nativeplace" th:placeholder="${user.address}">
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="oldPas">旧密码</label>
+                                <input type="text" name="oldPas"  class="contact-subject form-control" id="oldPas" placeholder="旧密码">
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="newPas">新密码</label>
+                                <input type="text" name="newPas"  class="contact-subject form-control" id="newPas" placeholder="新密码">
+                            </div>
+                            <button type="button" class="btn" id="back">返回</button>
+                            <button type="button" class="btn" id="updatePas">修改</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="resource/jquery-3.5.1/jquery-3.5.1.min.js"></script>
+<script src="resource/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="resource/assets/js/jquery.backstretch.min.js"></script>
+<script src="resource/assets/js/retina-1.1.0.min.js"></script>
+<script src="resource/assets/js/scripts.js"></script>
+<script src="resource/assets/js/placeholder.js"></script>
+<script>
+
+    $("#back").click(function () {
+        window.location.href = 'clientIndex.do';
+    });
+
+    $("#updatePas").click(function () {
+        var email = $("#email").val();
+        var age = $("#age").val();
+        var nativeplace = $("#nativeplace").val();
+        var oldPas = $("#oldPas").val();
+        var newPas = $("#newPas").val();
+        if(oldPas==''){
+            alert("老密码不能为空");
+        }
+        else if(newPas==''){
+            alert("新密码不能为空");
+        }
+        else {
+            var array = [oldPas,newPas,email,age,nativeplace];
+            $.ajax({
+                type: "POST",
+                url: "/updatePsw.do",
+                dataType: "json",
+                contentType : "application/json;charset=UTF-8",
+                data:JSON.stringify(array),
+                success: function (data) {
+                    alert(data);
+                    if (data=='修改成功'){
+                        window.location.href = "/loginHtml.do";
+                    }
+                }
+            });
+        }
+    })
+</script>
+</html>

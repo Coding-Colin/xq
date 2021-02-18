@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.community.system.mapper.InfoMapper">
+
+    <insert id="add" parameterType="com.community.system.bean.Info">
+        INSERT INTO info (loginUser,email,content,idate) VALUES(#{loginUser},#{email},#{content},now());
+    </insert>
+
+    <select id="getAll" resultType="com.community.system.bean.Info">
+        select * from info;
+    </select>
+
+    <update id="reply">
+        update info set content=#{info},idate=now() where id=#{id};
+    </update>
+
+    <select id="getByLoginUser" parameterType="java.lang.String" resultType="com.community.system.bean.Info">
+        select * from info where loginUser=#{loginUser}
+    </select>
+
+</mapper>

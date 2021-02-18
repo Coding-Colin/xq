@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.community.system.mapper.AfficheMapper">
+
+    <select id="getAll" resultType="com.community.system.bean.Affiche">
+        select * from affiche;
+    </select>
+
+    <select id="getById" parameterType="java.lang.Integer" resultType="com.community.system.bean.Affiche">
+        select * from affiche where id=#{id};
+    </select>
+
+    <insert id="add" parameterType="com.community.system.bean.Affiche">
+        insert into affiche(title,content,adate) values (#{title},#{content},now());
+    </insert>
+
+    <update id="update" parameterType="com.community.system.bean.Affiche">
+        update affiche set title=#{title},content=#{content},adate=now() where id=#{id};
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from affiche where id=#{id};
+    </delete>
+
+</mapper>
