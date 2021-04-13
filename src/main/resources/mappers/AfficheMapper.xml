@@ -23,4 +23,8 @@
         delete from affiche where id=#{id};
     </delete>
 
+    <select id="queryByKeyWord" parameterType="java.lang.String" resultType="com.community.system.bean.Affiche">
+        select * from affiche where title like concat('%',#{id},'%');
+    </select>
+
 </mapper>

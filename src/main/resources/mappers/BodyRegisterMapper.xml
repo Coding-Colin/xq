@@ -28,10 +28,12 @@
     </select>
 
     <select id="checkToday" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select count(1) from bodyregister where fid=#{fid} and TO_DAYS(date) = TO_DAYS(now())
+        select count(1) from bodyregister where fid=#{fid}
+        and DATE_FORMAT(date,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d')
     </select>
 
     <select id="checkTem" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select count(1) from bodyregister where fid=#{fid} and temperature > 37.3
+        and DATE_FORMAT(date,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d')
     </select>
 </mapper>

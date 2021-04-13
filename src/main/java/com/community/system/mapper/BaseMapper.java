@@ -6,7 +6,7 @@ import java.util.List;
  * CRUD接口
  * @param <T>
  */
-public interface BaseMapper<T> {
+public interface  BaseMapper<T> {
 
     List<T> getAll();
 

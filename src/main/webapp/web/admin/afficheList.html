@@ -13,7 +13,14 @@
     <div th:replace="admin/common::sidebar"></div>
     <div class="layui-body">
         <br>&nbsp;&nbsp;&nbsp;
-        <button type="button" class="layui-btn layui-btn-radius" data-toggle="modal" data-target="#myModal" id="addinformationbtn">添加公告</button>
+        <div>
+            &nbsp;&nbsp;&nbsp;
+            <button type="button" class="layui-btn layui-btn-radius" data-toggle="modal" data-target="#myModal"
+                    id="addinformationbtn">添加公告
+            </button>
+            <input class="layui-input layui-col-md-offset3" style="width: 300px;display: inline" id="inputbtn">
+            <a type="button" class="layui-btn sss" id="selectbtn">搜索</a>
+        </div>
         <!-- 内容主体区域 -->
         <table class="layui-table">
             <thead>
@@ -25,7 +32,7 @@
                 <th>操作</th>
             </tr>
             </thead>
-            <tbody >
+            <tbody id="bodydiv">
             <tr th:each="log:${logs}">
                 <th width="16%">[[${log.id}]]</th>
                 <th width="20%">[[${log.title}]]</th>
@@ -33,8 +40,10 @@
                 <th width="16%" th:text="${#dates.format(log.adate,'YYYY-MM-dd')}"></th>
                 <th width="20%">
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <a class="layui-btn  layui-btn-radius selectinformation" th:data-id="${log.id}" data-toggle="modal" data-target="#myModal" id="selectinformation">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a class="layui-btn layui-btn-primary layui-btn-radius deleteinformation" th:data-id="${log.id}">删除</a>
+                    <a class="layui-btn  layui-btn-radius selectinformation" th:data-id="${log.id}" data-toggle="modal"
+                       data-target="#myModal">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a class="layui-btn layui-btn-primary layui-btn-radius deleteinformation"
+                       th:data-id="${log.id}">删除</a>
                 </th>
             </tr>
             </tbody>
@@ -60,7 +69,7 @@
                 <form>
                     <div class="form-group">
                         <label for="aititle">公告题目</label>
-                        <input type="text" class="form-control" id="aititle" >
+                        <input type="text" class="form-control" id="aititle">
                     </div>
                     <div class="form-group">
                         <label for="aicontent">内容</label>
@@ -81,7 +90,7 @@
 <script src="resource/jquery-3.5.1/jquery-3.5.1.min.js"></script>
 <script>
     //JavaScript代码区域
-    layui.use('element', function(){
+    layui.use('element', function () {
         var element = layui.element;
     });
 
@@ -97,25 +106,23 @@
     //公用方法
     $("#ibtn").click(function () {
         var val = $("#ibtn").text();
-        if (val=='添加'){
+        if (val == '添加') {
             add();
-        }
-        else if(val=='更新'){
+        } else if (val == '更新') {
             update();
         }
     });
 
     //编辑
-    $(".selectinformation").click(function (){
+    $(".selectinformation").click(function () {
         var id = $(this).attr("data-id");
-        localStorage.setItem("id",id);
+        localStorage.setItem("id", id);
         $.ajax({
-            type: "POST",
-            url: "/selectAff.do",
+            type: "GET",
+            url: "/selectAff/" + id + ".do",
             dataType: "json",
-            contentType : "application/json;charset=UTF-8",
-            data:id,
-            success: function(data){
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
                 $("#myModalLabel").html("修改公告");
                 $("#ibtn").text("更新");
                 $("#aititle").val(data.title);
@@ -124,47 +131,75 @@
         });
     });
 
+    function upd(e) {
+        localStorage.setItem("id", e);
+        $.ajax({
+            type: "POST",
+            url: "/selectAff/" + e + ".do",
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
+                $("#myModalLabel").html("修改公告");
+                $("#ibtn").text("更新");
+                $("#aititle").val(data.title);
+                $("#aicontent").val(data.content);
+            }
+        });
+    }
+
     //删除
-    $(".deleteinformation").click(function (){
+    $(".deleteinformation").click(function () {
         var id = $(this).attr("data-id");
         $.ajax({
             type: "POST",
-            url: "/deleteAff.do",
+            url: "/deleteAff/" + id + ".do",
             dataType: "json",
-            contentType : "application/json;charset=UTF-8",
-            data:id,
-            success: function(data){
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
                 alert(data);
-                if (data=="删除成功"){
+                if (data == "删除成功") {
                     window.location.href = window.location.href;
                 }
             }
         });
     });
 
+    function del(e) {
+        $.ajax({
+            type: "POST",
+            url: "/deleteAff/" + e + ".do",
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
+                alert(data);
+                if (data == "删除成功") {
+                    window.location.href = window.location.href;
+                }
+            }
+        });
+    }
+
     //    添加
     function add() {
         var aititle = $("#aititle").val();
         var aicontent = $("#aicontent").val();
-        if(aititle=='') {
+        if (aititle == '') {
             alert("公告题目不能为空");
-        }
-        else if(aicontent=='') {
+        } else if (aicontent == '') {
             alert("公告内容不能为空");
-        }
-        else {
+        } else {
             if (confirm("确认添加？")) {
-                var array = [aititle,aicontent];
+                var array = [aititle, aicontent];
                 $.ajax({
                     type: "POST",
                     url: "/addAff.do",
                     dataType: "json",
-                    contentType : "application/json;charset=UTF-8",
-                    data:JSON.stringify(array),
+                    contentType: "application/json;charset=UTF-8",
+                    data: JSON.stringify(array),
                     success: function (data) {
                         alert(data);
-                        if (data=='添加成功') {
-                            window.location.href=window.location.href;
+                        if (data == '添加成功') {
+                            window.location.href = window.location.href;
                         }
                     }
                 });
@@ -178,22 +213,60 @@
         var aititle = $("#aititle").val();
         var aicontent = $("#aicontent").val();
         if (confirm("确认修改?")) {
-            var array = [id,aititle,aicontent];
+            var array = [id, aititle, aicontent];
             $.ajax({
                 type: "POST",
                 url: "/updateAff.do",
                 dataType: "json",
-                contentType : "application/json;charset=UTF-8",
-                data:JSON.stringify(array),
+                contentType: "application/json;charset=UTF-8",
+                data: JSON.stringify(array),
                 success: function (data) {
                     alert(data);
-                    if (data=='更新成功') {
-                        window.location.href=window.location.href;
+                    if (data == '更新成功') {
+                        window.location.href = window.location.href;
                     }
 
                 }
             });
         }
+    }
+
+    //    查询
+    $(".sss").click(function () {
+        var value = $("#inputbtn").val();
+        $.ajax({
+            type: "POST",
+            url: "/queryAff.do",
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            data: JSON.stringify({
+                keyWord: value
+            }),
+            success: function (data) {
+                var html = '';
+                for (var i = 0; i < data.length; i++) {
+                    html += '<tr>';
+                    html += '<th width="16%">' + data[i].id + '</th>';
+                    html += '<th width="20%">' + data[i].title + '</th>';
+                    html += '<th width="24%">' + data[i].content + '</th>';
+                    html += '<th width="16%">' + dateParser(data[i].adate) + '</th>';
+                    html += '<th width="20%">';
+                    html += '<a class="layui-btn  layui-btn-radius selectinformation" onclick="upd(' + data[i].id + ')" data-toggle="modal" data-target="#myModal">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;';
+                    html += '<a class="layui-btn layui-btn-primary layui-btn-radius deleteinformation" onclick="del(' + data[i].id + ')">删除</a>';
+                    html += '</th>';
+                    html += '</tr>';
+                }
+                $("#bodydiv").html(html);
+            }
+        });
+    });
+
+    function dateParser(time) {
+        let datetime = new Date(time);
+        let year = datetime.getFullYear();
+        let month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
+        let date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
+        return year + "-" + month + "-" + date;
     }
 </script>
 </body>

@@ -35,8 +35,8 @@
         outregister.date
         from outregister,family
         where `family`.`id` = outregister.fid
-        and `family`.`name` = #{name}
-        and DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(outregister.date)
+        and `family`.`name`= #{name}
+        and DATE_SUB(CURDATE(), INTERVAL 14 DAY) &lt;= date(outregister.date)
         limit 0,14
     </select>
 </mapper>

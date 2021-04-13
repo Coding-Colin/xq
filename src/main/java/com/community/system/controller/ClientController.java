@@ -57,7 +57,7 @@ public class ClientController {
             if (bodyRegisterMapper.checkToday(family.id) == 0){
                 stringBuffer.append(family.name+"今日没有登记体温！");
             }
-            if (bodyRegisterMapper.checkToday(family.id) > 0){
+            if (bodyRegisterMapper.checkTem(family.id) > 0){
                 stringBuffer.append(family.name+"体温异常！");
             }
         }

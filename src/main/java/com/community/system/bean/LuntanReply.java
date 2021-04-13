@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * 论坛回复
  */
-public class LuntanReply {
+public class  LuntanReply {
 
     public Integer id;
     public String name;

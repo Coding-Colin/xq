@@ -1,16 +1,19 @@
 package com.community.system.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.community.system.bean.*;
 import com.community.system.mapper.*;
 import com.community.system.util.JsonUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -215,11 +218,24 @@ public class AdminController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/selectAff.do")
-    public String getInformation(@RequestBody Integer id){
+    @RequestMapping("/selectAff/{id}.do")
+    public String getInformation(@PathVariable("id") Integer id){
         Affiche information = afficheMapper.getById(id);
         return JsonUtil.toJson(information);
     }
+
+    /**
+     * 关键字过滤
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/queryAff.do")
+    public String getInformation(@RequestBody JSONObject params){
+        String keyWord = params.getString("keyWord");
+        List<Affiche> list = afficheMapper.queryByKeyWord(keyWord);
+        return JsonUtil.toJson(list);
+    }
+
     /**
      * 更新公告
      * @return
@@ -240,8 +256,8 @@ public class AdminController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/deleteAff.do")
-    public String deleteinformation(@RequestBody Integer id){
+    @RequestMapping("/deleteAff/{id}.do")
+    public String deleteinformation(@PathVariable("id") Integer id){
         afficheMapper.delete(id);
         return JsonUtil.toJson("删除成功");
     }
@@ -268,7 +284,7 @@ public class AdminController {
     }
 
     /**
-     * 跳转意见收集
+     * 跳转溯源
      * @return
      */
     @ResponseBody
@@ -277,7 +293,13 @@ public class AdminController {
         if (null == value[0] || value[0].length() == 0){
            return JsonUtil.toJson(outRegisterMapper.getByLoginUser(""));
         }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd");
         List<Map<String,Object>> list = outRegisterMapper.getByLoginUser14(value[0]);
+        for (Map<String,Object> map:list){
+            if (map.get("date") != null){
+                map.put("date",simpleDateFormat.format((Date)map.get("date")));
+            }
+        }
         return JsonUtil.toJson(list);
     }
 }
